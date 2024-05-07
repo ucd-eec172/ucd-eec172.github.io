@@ -13,4 +13,4 @@ html documents that Canvas doesn't play nice with.
 - [lab 1](labs/lab1.html)
 - [lab 2](labs/lab2.html)
 - [lab 3](labs/lab3.html)
-<!-- - [lab 4](labs/lab4.html) -->
+- [lab 4](labs/lab4.html)
