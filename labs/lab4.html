@@ -1231,6 +1231,8 @@ Access Policy for Device Shadows</a></li>
 <li><a href="#converting-keyscertificates-with-openssl"
 id="toc-converting-keyscertificates-with-openssl">Converting
 Keys/Certificates with OpenSSL</a></li>
+<li><a href="#updating-the-servicepack"
+id="toc-updating-the-servicepack">Updating the ServicePack</a></li>
 <li><a href="#flash-key-and-certificates-to-cc3200"
 id="toc-flash-key-and-certificates-to-cc3200">Flash Key and Certificates
 to CC3200</a></li>
@@ -1665,27 +1667,38 @@ class="sourceCode console"><code class="sourceCode simpleconsole"><span id="cb4-
 class="sourceCode console"><code class="sourceCode simpleconsole"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">$ openssl</span> rsa<span class="at"> -outform</span> der<span class="at"> -in</span> &quot;path/to/private.pem.key&quot;<span class="at"> -out</span> &quot;path/to/private.der&quot;</span></code></pre></div></li>
 </ul></li>
 </ol>
-<h3 id="flash-key-and-certificates-to-cc3200">Flash Key and Certificates
-to CC3200</h3>
+<h3 id="updating-the-servicepack">Updating the ServicePack</h3>
 <p>If the firmware on your CC3200 is out of date, you should use
 UniFlash to update to the latest service pack. When you run the
-application program, you should verify that you get the updated Build
-Version in one of the status messages. For example:</p>
+application program on the CC3200, you should verify that you get the
+updated Build Version in one of the status messages. For example:</p>
 <pre><code>Host Driver Version: 1.0.1.6
 
 Build Version 2.10.0.0.31.1.4.0.1.1.0.3.34</code></pre>
-<p>(exact numbers will be different. Your Host Driver version should be
-1.0.1.15)</p>
+<p>(exact numbers will be different.)</p>
 <blockquote>
-<p>Note: For Mac users, you should be able to do this using
-<code>cc3200tool</code> with the following command:</p>
+<p>Note: the Host Driver Version is currently hard-coded to
+<code>1.0.1.14</code>, however, you should have uploaded the most recent
+service pack <code>1.0.1.15</code>.</p>
+</blockquote>
+<p><strong>Windows</strong> (Preferred): Open UniFlash and configure for
+CC3200. Then in the main page, select
+<code>ServicePack Programming</code>, then navigate to your ServicePack
+directory (not the same as the sdk directory) and select the
+<code>servicepack&lt;...&gt;.bin</code> file. Hit ok and let it do its
+thing.</p>
+<p><strong>Mac</strong>: For Mac users, you should be able to do the
+same using <code>cc3200tool</code> with the following command:</p>
 <div class="sourceCode" id="cb7"><pre
 class="sourceCode console"><code class="sourceCode simpleconsole"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">$ cc3200tool</span><span class="at"> --sop2</span> \~rts<span class="at"> --reset</span> dtr <span class="dt">\</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>format_flash<span class="at"> --size</span>=1M <span class="dt">\</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>write_file<span class="at"> --file</span>-size=0x20000 <span class="dt">\</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      --signature &lt;path/to/servicepack&gt;/ota/ota_1.0.1.15-2.15.0.1.ucf.signed.bin <span class="dt">\</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      &lt;path/to/servicepack&gt;/ota/ota_1.0.1.15-2.15.0.1.ucf /sys/servicepack.ucf</span></code></pre></div>
-</blockquote>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>     --signature &lt;path/to/servicepack&gt;/ota/ota_1.0.1.15-2.15.0.1.ucf.signed.bin <span class="dt">\</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>     &lt;path/to/servicepack&gt;/ota/ota_1.0.1.15-2.15.0.1.ucf /sys/servicepack.ucf</span></code></pre></div>
+<p>(There is unfortunately currently no good way to confirm if this
+works.)</p>
+<h3 id="flash-key-and-certificates-to-cc3200">Flash Key and Certificates
+to CC3200</h3>
 <p>To enable a secure connection from your CC3200, you need to download
 the private key and certificates to your board. You will do this using
 the UniFlash utility or <code>cc3200tool</code>, as described in the
@@ -1830,7 +1843,23 @@ you can do an HTTP GET on it. You can give the shadow state by using the
 HTTP POST command or by using the AWS web interface.</p>
 </blockquote>
 <p>In this part, you can start with the working example project
-<code>SSL_REST_API_AWS.zip</code> uploaded on Canvas.</p>
+<code>lab4-blank.zip</code> uploaded on Canvas.</p>
+<blockquote>
+<p>To build it, you will need to ensure that your
+<code>CC3200_SDK_ROOT</code> variable is set. The instructions to verify
+this as follows:</p>
+<ol type="1">
+<li>Right-Click on your project name and select
+<code>Show Build Settings</code>.</li>
+<li>Select <code>Build</code> on the right side of the window, then
+select the <code>Variables</code> tab.</li>
+<li>Check <code>Show System Variables</code> and search for the
+<code>CC3200_SDK_ROOT</code> variable. If it is present, double-click
+it, otherwise select <code>Add New</code> on the right side.</li>
+<li>Make sure the variable type is "Path", and in the value box, enter
+the file system path to your SDK folder.</li>
+</ol>
+</blockquote>
 <p>You will need to examine it carefully to understand it and modify it
 appropriately. In particular, you should examine the
 <code>http_post()</code> function to see how the HTTP command is sent to
