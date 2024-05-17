@@ -1095,7 +1095,7 @@
 
         /* CSS for syntax highlighting */
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span { line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -1305,7 +1305,7 @@ per team</p>
 <p>[2]: OpenSSL is necessary to convert <code>.der</code> certificates
 from the <code>.pem</code> format. We have already provided the RootCA
 <code>.der</code> certificate on Canvas, but you will need to do this
-for the unique certificates generated for your device. <strong>You must
+for the unique certificates generated for your device. <strong>You MUST
 use OpenSSL Version 1.1.1</strong>.</p>
 </blockquote>
 <h2 id="prelab-aws-iot-and-rest-apis">Prelab: AWS IoT and REST APIs</h2>
@@ -1631,6 +1631,10 @@ be unique to each device. It is highly recommended to group or name the
 files accordingly so that the keys/certificate pairs do not get mixed up
 or over-written.</p>
 </blockquote>
+<blockquote>
+<p>To reiterate: <strong>You MUST use OpenSSL Version
+1.1.1</strong>.</p>
+</blockquote>
 <h4 id="windows">Windows</h4>
 <ol type="1">
 <li>Install OpenSSL 1.1.1. The following link may be helpful: <a
@@ -1830,6 +1834,21 @@ reprogram the device</strong>:</p>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MINUTE     </span><span class="dv">0</span><span class="pp"> </span><span class="co">/* Time - minutes */</span></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="pp">#define SECOND     </span><span class="dv">0</span><span class="pp"> </span><span class="co">/* Time - seconds */</span></span></code></pre></div>
 <p>Now your CC3200 should be able to connect securely to AWS.</p>
+<blockquote>
+<p>Note: If you have curl installed on your computer, you can check the
+certificate you downloaded using the following command:</p>
+<pre><code>curl --tlsv1.2 &quot;https://ENDPOINT.iot.us-east-1.amazonaws.com:8443/things/THING_NAME/shadow&quot; \
+  --cacert AmazonRootCA1.pem \
+  --key KEY_ID-private.pem.key \
+  --cert KEY_ID-certificate.pem.crt</code></pre>
+<p>Please note that the port number <em>must</em> be 8443</p>
+<p>You can also check the DER files with a similar command:</p>
+<pre><code>curl --tlsv1.2 &quot;https://ENDPOINT.iot.us-east-1.amazonaws.com:8443/things/THING_NAME/shadow&quot; \
+  --cacert AmazonRootCA1.pem \
+  --key private.der \
+  --cert client.der \
+  --cert-type DER --key-type DER</code></pre>
+</blockquote>
 <hr />
 <h3 id="lab-checkoff-task-1"><em>Lab Checkoff Task 1</em></h3>
 <p><strong>Demonstrate that you can use a POST request to post state to
